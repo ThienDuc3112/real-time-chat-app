@@ -3,18 +3,9 @@ import cors from "cors";
 import { createServer } from "http";
 import { config } from "dotenv";
 import { Server } from "socket.io";
-// import mongoose from "mongoose";
+import { testRouter } from "./routes/test";
 
 config();
-
-// mongoose.connect(process.env.MONGO_URL as string);
-// const db = mongoose.connection;
-// db.once("open", () => {
-//   console.log("Connected to db");
-// });
-// db.on("error", (err) => {
-//   console.error(err);
-// });
 
 export const app = express();
 
@@ -24,6 +15,8 @@ app.use(express.json());
 app.get("/up", (req, res) => {
   res.send();
 });
+
+app.use("/test", testRouter);
 
 const server = createServer(app);
 

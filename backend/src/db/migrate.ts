@@ -5,7 +5,7 @@ import { config } from "dotenv";
 config();
 
 const pool = new Pool({
-  connectionString: `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@localhost:${process.env.PG_PORT}/${process.env.PG_DB}?schema=public`,
+  connectionString: process.env.PG_URL,
 });
 
 const db = drizzle(pool);
