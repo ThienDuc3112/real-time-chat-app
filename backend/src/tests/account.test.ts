@@ -1,14 +1,15 @@
-import mongoose from "mongoose";
-import { afterAll, beforeAll, describe, it } from "vitest";
+import { describe, it } from "vitest";
 import { config } from "dotenv";
+import supertest from "supertest";
+import { app } from "..";
 config();
 
 describe("Account api", () => {
-  beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL as string);
-  });
-  it("Connection exist", () => {});
-  afterAll(async () => {
-    await mongoose.disconnect();
+  it("Verify input", () => {
+    supertest(app)
+      .post("/user/register")
+      .expect(404, (err, res) => {
+        console.error(err);
+      });
   });
 });

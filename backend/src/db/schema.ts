@@ -28,12 +28,13 @@ export const rooms = pgTable("rooms", {
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: varchar("username", { length: 50 }).notNull(),
-  email: varchar("email", { length: 255 }),
+  username: varchar("username", { length: 50 }).notNull().unique(),
+  passwordDigest: varchar("password_digest", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
 });
 
 export const roomToMember = pgTable(
-  "roomToMember",
+  "room_to_member",
   {
     roomId: bigint("room_id", { mode: "bigint" }).references(() => rooms.id),
     userId: integer("user_id").references(() => users.id),

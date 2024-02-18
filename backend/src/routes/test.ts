@@ -1,11 +1,9 @@
 import { Router } from "express";
 import { db } from "../db/client";
-import { users } from "../db/schema";
 
 export const testRouter = Router();
 
 testRouter.get("/", async (req, res) => {
-  const result = await db.select().from(users);
   // const data = await db.query.rooms.findFirst({
   //   columns:{
   //   }
