@@ -10,7 +10,7 @@ export const safeGetUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token: string = req.cookies?.token;
+  const token: string | undefined = req.headers.authorization?.split(" ")[1];
   if (token) {
     verify(token, `${process.env.SECRET}`, async (err, user: any) => {
       if (!err) {
@@ -28,7 +28,7 @@ export const getUser = (
   res: Response,
   next: NextFunction
 ) => {
-  const token: string = req.cookies?.token;
+  const token: string | undefined = req.headers.authorization?.split(" ")[1];
   if (token) {
     verify(token, `${process.env.SECRET}`, async (err, user: any) => {
       if (!err) {

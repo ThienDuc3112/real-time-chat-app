@@ -1,10 +1,14 @@
-import { beforeAll, describe, it } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import { config } from "dotenv";
 import supertest from "supertest";
 import { app } from "..";
 config();
 const request = supertest(app);
 let cookie = "";
+let token = {
+  token: "",
+  expiredAt: 0,
+};
 describe("Handle user routes", () => {
   beforeAll(async () => {
     await request.post("/user/register").send({
@@ -58,6 +62,8 @@ describe("User login", () => {
       })
       .expect(200);
     cookie = res.headers["set-cookie"];
+    token = res.body;
+    console.log(token);
   });
   it("Reject bad login attempt", async () => {
     await request
@@ -97,17 +103,28 @@ describe("User deletion", () => {
       .expect(401);
     await request
       .delete("/user/delete")
-      .set("Cookie", cookie)
+      .set("Authorization", `Bearer ${token.token}`)
       .send({ password: "incorect" })
       .expect(401);
   });
   it("Delete user", async () => {
     const res = await request
       .delete("/user/delete")
-      .set("Cookie", cookie)
+      .set("Authorization", `Bearer ${token.token}`)
       .send({
         password: "password",
       })
       .expect(200);
+  });
+});
+
+describe("Refresh token", () => {
+  it("Refresh access token", async () => {
+    const res = await request
+      .get("/user/refresh")
+      .set("Cookie", cookie)
+      .send()
+      .expect(200);
+    expect(typeof res.body?.token).toBe("string");
   });
 });
