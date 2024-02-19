@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import { testRouter } from "./routes/test";
 import { userRouter } from "./routes/user";
 import cookieParser from "cookie-parser";
+import { setUpListener } from "./ioManager";
 
 config();
 
@@ -30,12 +31,7 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  console.log(
-    `New connection ${socket.data}\t Client count: ${io.engine.clientsCount}`
-  );
-  socket.join("public");
-});
+setUpListener(io);
 
 server.listen(process.env.PORT ?? 6969, () => {
   console.log(`Server listen on ${process.env.PORT ?? 6969}`);

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index.ts",
-    "test": "vitest --api",
+    "test": "vitest --api 3000",
     "migrate:generate": "drizzle-kit generate:pg --schema=./src/db/schema.ts",
     "migrate:push": "ts-node ./src/db/migrate.ts",
     "migrate": "npm run migrate:generate && npm run migrate:push",
