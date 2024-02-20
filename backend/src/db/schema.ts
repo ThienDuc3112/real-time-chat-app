@@ -12,15 +12,6 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const messages = pgTable("messages", {
-  id: bigserial("id", { mode: "bigint" }).primaryKey(),
-  roomId: bigint("room_id", { mode: "bigint" }).references(() => rooms.id),
-  userId: integer("user_id").references(() => users.id),
-  content: text("content").notNull(),
-  timestamp: timestamp("timestamp", { mode: "date" }).defaultNow(),
-  editted: boolean("editted").default(false),
-});
-
 export const rooms = pgTable("rooms", {
   id: bigserial("id", { mode: "bigint" }).primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -33,11 +24,36 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
 });
 
+export const messages = pgTable("messages", {
+  id: bigserial("id", { mode: "bigint" }).primaryKey(),
+  roomId: bigint("room_id", { mode: "bigint" })
+    .references(() => rooms.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  userId: integer("user_id")
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  content: text("content").notNull(),
+  timestamp: timestamp("timestamp", { mode: "date" }).defaultNow(),
+  editted: boolean("editted").default(false),
+});
+
 export const roomToMember = pgTable(
   "room_to_member",
   {
-    roomId: bigint("room_id", { mode: "bigint" }).references(() => rooms.id),
-    userId: integer("user_id").references(() => users.id),
+    roomId: bigint("room_id", { mode: "bigint" })
+      .references(() => rooms.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    userId: integer("user_id")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
   },
   (table) => {
     return {

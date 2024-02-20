@@ -10,6 +10,15 @@ const MainPage = () => {
     socket.current = io(`${API_URL}`, {
       protocols: ["websocket"],
     });
+    socket.current.emit("joinAllRoom", `Insert access token`);
+    socket.current.emit("sendMessage", {
+      to: "random room",
+      content: "test",
+      accessToken: "oasjdfiojoiwaskjdf'aeasp",
+    });
+    socket.current.on("error", (error: unknown) => {
+      console.log(error);
+    });
   }, []);
   return (
     <>

@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import { IUserRequest } from "../interfaces/IUserRequest";
-import { verify } from "jsonwebtoken";
 import { db } from "../db/client";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { verifyAccessToken } from "../helper/verifyToken";
 
 export const safeGetUser = async (
   req: IUserRequest,
@@ -11,35 +11,25 @@ export const safeGetUser = async (
   next: NextFunction
 ) => {
   const token: string | undefined = req.headers.authorization?.split(" ")[1];
-  if (token) {
-    verify(token, `${process.env.SECRET}`, async (err, user: any) => {
-      if (!err) {
-        req.user = (
-          await db.select().from(users).where(eq(users.id, user.id))
-        )[0];
-      }
-    });
-  }
+  if (!token) return next();
+  const user = verifyAccessToken(token);
+  if (user === undefined) return next();
+  req.user = (await db.select().from(users).where(eq(users.id, user)))[0];
   next();
 };
 
-export const getUser = (
+export const getUser = async (
   req: IUserRequest,
   res: Response,
   next: NextFunction
 ) => {
   const token: string | undefined = req.headers.authorization?.split(" ")[1];
-  if (token) {
-    verify(token, `${process.env.SECRET}`, async (err, user: any) => {
-      if (!err) {
-        req.user = (
-          await db.select().from(users).where(eq(users.id, user.id))
-        )[0];
-        if (!req.user) return res.status(401).send();
-        next();
-      } else {
-        return res.status(401).send();
-      }
-    });
-  } else return res.status(401).send();
+  if (!token) return res.status(401).send();
+  const user = verifyAccessToken(token);
+  if (user === undefined) {
+    return res.status(401).send();
+  }
+  req.user = (await db.select().from(users).where(eq(users.id, user)))[0];
+  if (!req.user) return res.status(401).send();
+  next();
 };

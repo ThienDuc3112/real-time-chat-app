@@ -3,10 +3,10 @@ import cors from "cors";
 import { createServer } from "http";
 import { config } from "dotenv";
 import { Server } from "socket.io";
-import { testRouter } from "./routes/test";
 import { userRouter } from "./routes/user";
 import cookieParser from "cookie-parser";
 import { setUpListener } from "./ioManager";
+import { roomRouter } from "./routes/room";
 
 config();
 
@@ -20,8 +20,8 @@ app.get("/up", (req, res) => {
   res.send();
 });
 
-app.use("/test", testRouter);
 app.use("/user", userRouter);
+app.use("/room", roomRouter);
 
 const server = createServer(app);
 
