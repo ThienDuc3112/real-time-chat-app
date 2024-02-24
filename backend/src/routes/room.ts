@@ -5,4 +5,4 @@ import { getUser } from "../middlewares/user";
 export const roomRouter = Router();
 
 roomRouter.post("/create", getUser, createRoom);
-roomRouter.get("/getAllRoom", getUser, getALlRooms);
+roomRouter.get("/getallroom", getUser, getALlRooms);
