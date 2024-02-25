@@ -5,7 +5,7 @@ import { db } from "../db/client";
 import { roomToMember, users } from "../db/schema";
 import { eq } from "drizzle-orm";
 
-export const joinAllRooms: TEventHandler = (io, socket) => {
+export const joinAllRooms: TEventHandler = (_, socket) => {
   socket.once("joinAllRoom", async (token: string) => {
     try {
       token = z.string().parse(token);

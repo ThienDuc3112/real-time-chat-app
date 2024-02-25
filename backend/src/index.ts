@@ -16,7 +16,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get("/up", (req, res) => {
+app.get("/up", (_, res) => {
   res.send();
 });
 

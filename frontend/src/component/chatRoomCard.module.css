@@ -1,0 +1,12 @@
+.card{
+    border: none;
+    height: 40px;
+    max-height: 40px;
+    min-height: 40px;
+    text-align: left;
+    background-color: white;
+    max-width: 250px;
+}
+.card:hover{
+    filter: brightness(0.80);
+}
