@@ -8,8 +8,14 @@ export const setUpListener = (
 ) => {
   io.on("connection", (socket) => {
     console.log(
-      `New connection ${socket.data}\t Client count: ${io.engine.clientsCount}`
+      `New connection ${socket.id}\t Client count: ${io.engine.clientsCount}`
     );
+    socket.on("disconnect", (reason) => {
+      console.log(
+        `${socket.id} disconnected\t Client count: ${io.engine.clientsCount}`
+      );
+      console.log(`Reason: ${reason}`);
+    });
     socket.join("public");
     sendMessage(io, socket);
     joinAllRooms(io, socket);

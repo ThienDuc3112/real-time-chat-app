@@ -1,4 +1,4 @@
-import { IMessage } from "../types/IMessage";
+import { IMessage } from "../../types/IMessage";
 
 const MessageBubble = ({message}:{message: IMessage}) => {
 
