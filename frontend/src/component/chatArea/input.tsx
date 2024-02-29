@@ -1,6 +1,7 @@
 import { FormEventHandler, useState } from "react";
 import { useSocketContext } from "../../context/socket/useSocketContext";
 import { getAccessToken } from "../../util/getAccessToken";
+import style from "./input.module.css";
 
 const Input = ({ focus }: { focus: string }) => {
   const socket = useSocketContext();
@@ -15,7 +16,7 @@ const Input = ({ focus }: { focus: string }) => {
     setMessage("");
   };
   return (
-    <div>
+    <div className={style.inputArea}>
       <form onSubmit={submitHandler}>
         <input
           type="text"

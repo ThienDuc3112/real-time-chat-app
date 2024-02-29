@@ -13,7 +13,7 @@ const ChatRoomList = ({
   setFocus: (id: string) => void;
 }) => {
   return (
-    <div>
+    <div className={style.sidebar}>
       <div className={style.container}>
         {Object.keys(rooms).map((roomId) => {
           const room = rooms[roomId];

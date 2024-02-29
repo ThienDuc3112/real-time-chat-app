@@ -15,7 +15,7 @@ const ChatArea = ({
   return (
     <div className={style.container}>
       <TopBar room={room} />
-      <div>
+      <div className={style.messageList}>
         {messages.map((msg) => (
           <MessageBubble message={msg} key={msg.id} />
         ))}
