@@ -1,9 +1,10 @@
-import { relations } from "drizzle-orm";
+import { Table, relations } from "drizzle-orm";
 import {
   bigint,
   bigserial,
   boolean,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   serial,
@@ -12,9 +13,12 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+export const roomType = pgEnum("room_type", ["direct_message", "normal"]);
+
 export const rooms = pgTable("rooms", {
   id: bigserial("id", { mode: "bigint" }).primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
+  roomType: roomType("room_type").notNull().default("normal"),
 });
 
 export const users = pgTable("users", {
@@ -37,8 +41,8 @@ export const messages = pgTable("messages", {
     })
     .notNull(),
   content: text("content").notNull(),
-  timestamp: timestamp("timestamp", { mode: "date" }).defaultNow(),
-  editted: boolean("editted").default(false),
+  timestamp: timestamp("timestamp", { mode: "date" }).defaultNow().notNull(),
+  editted: boolean("editted").default(false).notNull(),
 });
 
 export const roomToMember = pgTable(
@@ -61,6 +65,38 @@ export const roomToMember = pgTable(
     };
   }
 );
+
+export const friendships = pgTable(
+  "friendships",
+  {
+    user1: integer("user1")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    user2: integer("user2").references(() => users.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.user1, table.user2] }),
+    };
+  }
+);
+
+export const friendshipsRelation = relations(friendships, ({ one }) => {
+  return {
+    user1: one(users, {
+      fields: [friendships.user1],
+      references: [users.id],
+    }),
+    user2: one(users, {
+      fields: [friendships.user2],
+      references: [users.id],
+    }),
+  };
+});
 
 export const roomToMemberRelation = relations(roomToMember, ({ one }) => {
   return {
@@ -89,6 +125,7 @@ export const messageRelation = relations(messages, ({ one }) => ({
 export const userRelation = relations(users, ({ many }) => ({
   messages: many(messages),
   rooms: many(roomToMember),
+  friendships: many(friendships),
 }));
 
 export const roomRelation = relations(rooms, ({ many }) => ({

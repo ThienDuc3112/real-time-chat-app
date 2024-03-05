@@ -31,6 +31,7 @@ export const sendMessage: TEventHandler = (io, socket) => {
         ...message[0],
         roomId: message[0].roomId.toString(),
         id: message[0].id.toString(),
+        username: user.username
       });
     } catch (error) {
       socket.emit("error", error);

@@ -7,4 +7,6 @@
 
 .messageList{
     overflow-y: auto;
+    background-color: #eee;
+    height: 100%;
 }

@@ -6,4 +6,5 @@ export const roomRouter = Router();
 
 roomRouter.post("/create", getUser, createRoom);
 roomRouter.get("/getallroom", getUser, getAllRooms);
+roomRouter.get("/getroommessageswithusername/:roomId", getUser, getRoomMessages);
 roomRouter.get("/getroommessages/:roomId", getUser, getRoomMessages);
