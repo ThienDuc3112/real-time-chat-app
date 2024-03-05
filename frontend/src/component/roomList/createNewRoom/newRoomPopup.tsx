@@ -1,15 +1,20 @@
 import { useState } from "react";
+import PopupDialog from "../../popupDialog";
+// import { IUser } from "../../../types/IUser";
 
-export const NewRoomPopup = () => {
-  // Create a dialog box that create a new room
-  // The dialog box should have a input field for the room name
-  // The dialog box should have a button for creating the room
-  // The dialog box should have a button for canceling the creation
-  // The dialog box should have a button for closing the dialog box
+export const NewRoomPopup = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
   const [name, setName] = useState("");
+  const [user, setUser] = useState("");
+  //   const [users, setUsers] = useState([] as IUser[]);
   return (
-    <dialog>
-      <p>create a new room</p>
+    <PopupDialog open={open} onClose={onClose}>
+      <p>Create a new room</p>
       <input
         type="text"
         value={name}
@@ -17,9 +22,15 @@ export const NewRoomPopup = () => {
         name="name"
         placeholder="Room name"
       />
+      <input
+        type="text"
+        name="invite"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
+        placeholder="Invite user"
+      />
+      {/* <div>{users.map((user) => user.username).join(", ")}</div> */}
       <button>create</button>
-      <button>cancel</button>
-      <button>close</button>
-    </dialog>
+    </PopupDialog>
   );
 };
