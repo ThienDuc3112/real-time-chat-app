@@ -1,10 +1,9 @@
 import { FormEventHandler, useState } from "react";
-import { useSocketContext } from "../../context/socket/useSocketContext";
-import { getAccessToken } from "../../util/getAccessToken";
+import { socket } from "../../../context/socket";
+import { getAccessToken } from "../../../util/getAccessToken";
 import style from "./input.module.css";
 
 const Input = ({ focus }: { focus: string }) => {
-  const socket = useSocketContext();
   const [message, setMessage] = useState("");
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PopupDialog from "../../popupDialog";
+import PopupDialog from "../../../../component/popupDialog";
 // import { IUser } from "../../../types/IUser";
 
 export const NewRoomPopup = ({

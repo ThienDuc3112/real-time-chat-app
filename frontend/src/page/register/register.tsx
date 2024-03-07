@@ -1,6 +1,6 @@
 import { FormEventHandler, useState } from "react";
-import { API_URL } from "../constants";
-import { post } from "../util/fetch";
+import { API_URL } from "../../constants";
+import { post } from "../../util/fetch";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {

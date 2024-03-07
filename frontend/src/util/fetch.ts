@@ -27,8 +27,8 @@ export const post = async <T>(
 };
 
 export const get = async <T>(
-    url: string, 
-    option: RequestInit = {}
+  url: string,
+  option: RequestInit = {}
 ): Promise<[T, undefined] | [undefined, FetchError]> => {
-    return await post<T>(url, {method: "GET", ...option});
-}
+  return await post<T>(url, { method: "GET", ...option });
+};

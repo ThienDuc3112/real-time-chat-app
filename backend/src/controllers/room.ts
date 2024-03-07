@@ -4,6 +4,7 @@ import { db } from "../db/client";
 import { messages, roomToMember, rooms, users } from "../db/schema";
 import { z } from "zod";
 import { and, eq, inArray } from "drizzle-orm";
+import { inviteSchema } from "../zodSchemas/inviteSchema";
 
 export const createRoom = async (req: IUserRequest, res: Response) => {
   if (!req.user) return res.sendStatus(401);
@@ -81,5 +82,39 @@ export const getRoomMessages = async (req: IUserRequest, res: Response) => {
     );
   } catch (err) {
     res.sendStatus(400);
+  }
+};
+
+export const invite = async (req: IUserRequest, res: Response) => {
+  if (!req.user) return res.sendStatus(401);
+  try {
+    const action = inviteSchema.parse(req.body);
+    const room = (
+      await db
+        .select()
+        .from(roomToMember)
+        .where(
+          and(
+            eq(roomToMember.userId, req.user.id),
+            eq(roomToMember.roomId, action.roomId)
+          )
+        )
+    )[0];
+    if (!room) return res.status(404).json({ name: "NonExistenceRoom" });
+    let members: (typeof users.$inferSelect)[] = [];
+    if (action.users.length > 0)
+      members = await db
+        .select()
+        .from(users)
+        .where(inArray(users.id, action.users));
+    if (members.length > 0)
+      await db
+        .insert(roomToMember)
+        .values(
+          members.map((user) => ({ roomId: room.roomId, userId: user.id }))
+        );
+    return res.sendStatus(204);
+  } catch (error) {
+    res.status(400).send(error);
   }
 };

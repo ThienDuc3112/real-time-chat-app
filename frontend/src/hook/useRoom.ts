@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IRoom } from "../types/IRoom";
-import { useSocketContext } from "../context/socket/useSocketContext";
 import { API_URL } from "../constants";
 import { getAccessToken } from "../util/getAccessToken";
 import { get } from "../util/fetch";
+import { socket } from "../context/socket";
 
 export const useRoom = (): [
   { [key: string]: IRoom },
@@ -12,7 +12,6 @@ export const useRoom = (): [
 ] => {
   const [rooms, setRooms] = useState({} as { [key: string]: IRoom });
   const [updated, setUpdated] = useState({} as { [key: string]: boolean });
-  const socket = useSocketContext();
   useEffect(() => {
     getAccessToken().then(async (token) => {
       const [data, err] = await get<IRoom[]>(`${API_URL}/room/getallroom`, {

@@ -1,4 +1,4 @@
-import { IRoom } from "../../types/IRoom";
+import { IRoom } from "../../../types/IRoom";
 import ChatRoomCard from "./roomCard";
 import style from "./chatRoomList.module.css";
 import NewRoom from "./newRoom";

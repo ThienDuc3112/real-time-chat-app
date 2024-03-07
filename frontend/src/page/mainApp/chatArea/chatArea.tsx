@@ -1,8 +1,8 @@
 import Input from "./input";
 import MessageBubble from "./messageBubble";
 import style from "./chatArea.module.css";
-import { IRoom } from "../../types/IRoom";
-import { IMessage } from "../../types/IMessage";
+import { IRoom } from "../../../types/IRoom";
+import { IMessage } from "../../../types/IMessage";
 import TopBar from "./topBar";
 
 const ChatArea = ({

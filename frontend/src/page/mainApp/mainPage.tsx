@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import ChatArea from "./chatArea/chatArea";
 import ChatRoomList from "./roomList/chatRoomList";
-import { IMessage } from "../types/IMessage";
+import { IMessage } from "../../types/IMessage";
 import style from "./mainPage.module.css";
-import { useRoom } from "../hook/useRoom";
-import { get } from "../util/fetch";
-import { API_URL } from "../constants";
-import { getAccessToken } from "../util/getAccessToken";
-import { socket } from "../context/socket/socket";
+import { useRoom } from "../../hook/useRoom";
+import { get } from "../../util/fetch";
+import { API_URL } from "../../constants";
+import { getAccessToken } from "../../util/getAccessToken";
+import { socket } from "../../context/socket";
 
 const MainPage = () => {
   const [rooms, updated, setUpdated] = useRoom();
@@ -18,9 +18,7 @@ const MainPage = () => {
       console.log(error);
     });
     socket.on("incomingMessage", (msg: IMessage) => {
-      console.log(msg);
       setMsgs((prev) => {
-        console.log(prev);
         return { ...prev, [msg.roomId]: [...(prev[msg.roomId] ?? []), msg] };
       });
     });
@@ -40,7 +38,6 @@ const MainPage = () => {
         )
         .then(([data, err]) => {
           if (!err) {
-            console.log(data);
             setMsgs((prev) => ({ ...prev, [`${focus}`]: data }));
             setUpdated((prev) => ({ ...prev, [`${focus}`]: true }));
           }

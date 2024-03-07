@@ -1,4 +1,4 @@
-import { IRoom } from "../../types/IRoom";
+import { IRoom } from "../../../types/IRoom";
 import style from "./topbar.module.css";
 
 const TopBar = ({ room }: { room: IRoom | undefined }) => {
