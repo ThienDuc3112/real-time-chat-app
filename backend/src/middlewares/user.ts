@@ -7,7 +7,7 @@ import { verifyAccessToken } from "../helper/verifyToken";
 
 export const safeGetUser = async (
   req: IUserRequest,
-  res: Response,
+  _: Response,
   next: NextFunction
 ) => {
   const token: string | undefined = req.headers.authorization?.split(" ")[1];

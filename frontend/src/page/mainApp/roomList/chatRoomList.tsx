@@ -1,35 +1,36 @@
-import { IRoom } from "../../../types/IRoom";
 import ChatRoomCard from "./roomCard";
 import style from "./chatRoomList.module.css";
 import NewRoom from "./newRoom";
+import { useContext, useEffect } from "react";
+import { RoomContext } from "../../../context/room/roomContext";
 
 const ChatRoomList = ({
-  rooms,
-  setFocus,
+    setFocus,
 }: {
-  rooms: {
-    [keys: string]: IRoom;
-  };
-  setFocus: (id: string) => void;
+    setFocus: (id: string) => void;
 }) => {
-  return (
-    <div className={style.sidebar}>
-      <div className={style.container}>
-        {Object.keys(rooms).map((roomId) => {
-          const room = rooms[roomId];
-          return (
-            <ChatRoomCard
-              name={room.name}
-              id={room.id}
-              setFocus={setFocus}
-              key={room.id}
-            />
-          );
-        })}
-      </div>
-      <NewRoom />
-    </div>
-  );
+    const { rooms } = useContext(RoomContext)
+    useEffect(() => {
+        console.log("Room updated")
+    }, [rooms])
+    return (
+        <div className={style.sidebar}>
+            <div className={style.container}>
+                {Object.keys(rooms).map((roomId) => {
+                    const room = rooms[roomId];
+                    return (
+                        <ChatRoomCard
+                            name={room.name}
+                            id={room.id}
+                            setFocus={setFocus}
+                            key={room.id}
+                        />
+                    );
+                })}
+            </div>
+            <NewRoom />
+        </div>
+    );
 };
 
 export default ChatRoomList;

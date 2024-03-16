@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { NewRoomPopup } from "./createNewRoom/newRoomPopup";
+import { JoinRoomPopup } from "./joinRoom/joinRoomPopup";
 
-const NewRoom = () => {
-  const [open, setOpen] = useState(false);
+const RoomOptions = () => {
+  const [newRoomOpen, setNewRoomOpen] = useState(false);
+  const [joinRoomOpen, setJoinRoomOpen] = useState(false);
   return (
-    <>
-      <NewRoomPopup open={open} onClose={() => setOpen(false)} />
-      <button onClick={() => setOpen(true)}>New room</button>
-    </>
+    <div>
+      <JoinRoomPopup open={joinRoomOpen} onClose={() => setJoinRoomOpen(false)}/>
+      <NewRoomPopup open={newRoomOpen} onClose={() => setNewRoomOpen(false)} />
+      <button style={{width: "100%"}} onClick={() => setJoinRoomOpen(true)}>Join room</button>
+      <button style={{width: "100%"}} onClick={() => setNewRoomOpen(true)}>New room</button>
+    </div>
   );
 };
 
-export default NewRoom;
+export default RoomOptions;

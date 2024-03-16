@@ -1,36 +1,41 @@
-import { useState } from "react";
+import { FormEventHandler, useContext, useState } from "react";
 import PopupDialog from "../../../../component/popupDialog";
-// import { IUser } from "../../../types/IUser";
+import { RoomContext } from "../../../../context/room/roomContext";
 
 export const NewRoomPopup = ({
-  open,
-  onClose,
+    open,
+    onClose,
 }: {
-  open: boolean;
-  onClose: () => void;
+    open: boolean;
+    onClose: () => void;
 }) => {
-  const [name, setName] = useState("");
-  const [user, setUser] = useState("");
-  //   const [users, setUsers] = useState([] as IUser[]);
-  return (
-    <PopupDialog open={open} onClose={onClose}>
-      <p>Create a new room</p>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        name="name"
-        placeholder="Room name"
-      />
-      <input
-        type="text"
-        name="invite"
-        value={user}
-        onChange={(e) => setUser(e.target.value)}
-        placeholder="Invite user"
-      />
-      {/* <div>{users.map((user) => user.username).join(", ")}</div> */}
-      <button>create</button>
-    </PopupDialog>
-  );
+    const [name, setName] = useState("");
+    const {createRoom} = useContext(RoomContext)
+    const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault()
+        createRoom(name).then(success => {
+            if (success) {
+                alert("Room created")
+                setName("")
+                onClose()
+            } else {
+                alert("Unable to create room")
+            }
+        })
+    }
+    return (
+        <PopupDialog open={open} onClose={onClose}>
+            <p>Create a new room</p>
+            <form onSubmit={onSubmit}>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    name="name"
+                    placeholder="Room name"
+                />
+                <button type="submit">create</button>
+            </form>
+        </PopupDialog>
+    );
 };
