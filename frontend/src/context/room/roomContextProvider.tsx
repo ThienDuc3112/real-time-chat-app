@@ -9,7 +9,7 @@ import { get, post } from "../../util/fetch";
 export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     const [rooms, setRooms] = useState({} as { [key: string]: IRoom });
     const [updated, setUpdated] = useState({} as { [key: string]: boolean });
-    const joinRoom = useCallback(async (id: string): Promise<boolean> => {
+    const joinRoom = async (id: string): Promise<boolean> => {
         const token = await getAccessToken()
         let joinLink = ""
         try {
@@ -25,10 +25,11 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         })
         if (!err) {
             setRooms(prev => ({ ...prev, [data.id]: data }))
+            socket.emit("joinRoom", ({ accessToken: await getAccessToken(), roomId: data.id }))
             return true
         }
         return false
-    }, [])
+    }
     const createRoom = useCallback(async (name: string): Promise<boolean> => {
         const token = await getAccessToken()
         const [data, err] = await post<IRoom>(`${API_URL}/room/create`, {
@@ -40,6 +41,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         })
         if (!err) {
             setRooms(prev => ({ ...prev, [data.id]: data }))
+            socket.emit("joinRoom", ({ accessToken: await getAccessToken(), roomId: data.id }))
             return true
         }
         return false

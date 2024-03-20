@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { sendMessage } from "./listeners/sendMessage";
 import { joinAllRooms } from "./listeners/joinAllRooms";
+import { joinRoom } from "./listeners/joinRoom";
 
 export const setUpListener = (
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
@@ -19,5 +20,6 @@ export const setUpListener = (
     socket.join("public");
     sendMessage(io, socket);
     joinAllRooms(io, socket);
+    joinRoom(io, socket);
   });
 };

@@ -7,6 +7,7 @@ const Input = ({ focus }: { focus: string }) => {
   const [message, setMessage] = useState("");
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    if(message.length == 0) return;
     socket.emit("sendMessage", {
       to: focus,
       content: message,
