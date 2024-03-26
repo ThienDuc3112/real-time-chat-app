@@ -108,7 +108,7 @@ describe("User deletion", () => {
       .expect(401);
   });
   it("Delete user", async () => {
-    const res = await request
+    await request
       .delete("/user/delete")
       .set("Authorization", `Bearer ${token.token}`)
       .send({
