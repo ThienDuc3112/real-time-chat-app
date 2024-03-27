@@ -13,6 +13,5 @@ export const inviteSchema = z.object({
             }
         }, "Must be a bigint or a stringify bigint")
         .transform((value) => BigInt(value)),
-    accessToken: z.string(),
     validFor: z.number()
 });

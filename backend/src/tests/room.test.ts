@@ -21,7 +21,6 @@ describe("Room", async () => {
             .expect(200);
         cookie = res.headers["set-cookie"];
         token = res.body;
-        console.log(token);
     })
     describe("Room creation", () => {
         it("Create room", async () => {

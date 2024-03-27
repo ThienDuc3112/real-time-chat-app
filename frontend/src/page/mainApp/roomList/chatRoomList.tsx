@@ -3,6 +3,7 @@ import style from "./chatRoomList.module.css";
 import NewRoom from "./newRoom";
 import { useContext, useEffect } from "react";
 import { RoomContext } from "../../../context/room/roomContext";
+import Topbar from "./topbar/topbar";
 
 const ChatRoomList = ({
     setFocus,
@@ -15,6 +16,7 @@ const ChatRoomList = ({
     }, [rooms])
     return (
         <div className={style.sidebar}>
+            <Topbar/>
             <div className={style.container}>
                 {Object.keys(rooms).map((roomId) => {
                     const room = rooms[roomId];

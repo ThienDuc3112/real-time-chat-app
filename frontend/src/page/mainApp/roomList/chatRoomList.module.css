@@ -1,7 +1,8 @@
-.container{
+.container {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    background-color: #F4F4F5;
 }
 
 .sidebar {
