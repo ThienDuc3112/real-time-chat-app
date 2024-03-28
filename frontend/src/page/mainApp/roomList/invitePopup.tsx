@@ -1,8 +1,8 @@
 import { FormEventHandler, MouseEventHandler, useState } from "react";
-import PopupDialog from "../../../../component/popupDialog";
-import { post } from "../../../../util/fetch";
-import { API_URL } from "../../../../constants";
-import { getAccessToken } from "../../../../util/getAccessToken";
+import PopupDialog from "../../../component/popupDialog";
+import { post } from "../../../util/fetch";
+import { API_URL } from "../../../constants";
+import { getAccessToken } from "../../../util/getAccessToken";
 
 const InvitePopup = ({
     open,

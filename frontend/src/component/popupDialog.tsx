@@ -27,6 +27,7 @@ const PopupDialog = ({
               background: "rgba(0, 0, 0, 0.6)",
               top: 0,
               left: 0,
+              zIndex: 100
             }
           : { display: "none" }
       }

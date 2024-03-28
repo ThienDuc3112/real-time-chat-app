@@ -1,6 +1,6 @@
 import { FormEventHandler, useContext, useState } from "react";
-import PopupDialog from "../../../../component/popupDialog";
-import { RoomContext } from "../../../../context/room/roomContext";
+import PopupDialog from "../../../component/popupDialog";
+import { RoomContext } from "../../../context/room/roomContext";
 
 export const NewRoomPopup = ({
     open,

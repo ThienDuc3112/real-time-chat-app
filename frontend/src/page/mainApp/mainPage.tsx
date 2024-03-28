@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ChatArea from "./chatArea/chatArea";
-import ChatRoomList from "./roomList/chatRoomList";
+import SideBar from "./roomList";
 import { IMessage } from "../../types/IMessage";
 import style from "./mainPage.module.css";
 import { get } from "../../util/fetch";
@@ -46,7 +46,7 @@ const MainPage = () => {
     }, [focus, updated, setUpdated]);
     return (
         <div className={style.container}>
-            <ChatRoomList setFocus={setFocus} />
+            <SideBar setFocus={setFocus} focus={focus}/>
             <ChatArea room={rooms[`${focus}`]} messages={msgs[focus ?? ""] ?? []} />
         </div>
     );

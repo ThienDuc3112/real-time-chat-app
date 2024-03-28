@@ -1,15 +1,14 @@
 import { IMessage } from "../../../types/IMessage";
-import style from "./messageBubble.module.css";
 
 const MessageBubble = ({ message }: { message: IMessage }) => {
   return (
-    <div className={style.container}>
-      <div className={style.metadata}>
-        {message.username}
+    <div>
+      <p className="text-sm">
+        <strong>{message.username}</strong>
         {" - "}
         {new Date(message.timestamp).toLocaleDateString()}
-      </div>
-      <div className={style.content}>{message.content}</div>
+      </p>
+      <p>{message.content}</p>
     </div>
   );
 };
