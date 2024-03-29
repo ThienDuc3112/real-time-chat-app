@@ -7,5 +7,7 @@ export const RoomContext = createContext({
     updated: { [key: string]: boolean },
     setUpdated: Dispatch<SetStateAction<{ [key: string]: boolean }>>,
     joinRoom: (id: string) => Promise<boolean>,
-    createRoom: (name: string) => Promise<boolean>
+    createRoom: (name: string) => Promise<boolean>,
+    focus: string | undefined,
+    setFocus: Dispatch<SetStateAction<string | undefined>>,
 })

@@ -9,6 +9,7 @@ import { get, post } from "../../util/fetch";
 export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     const [rooms, setRooms] = useState({} as { [key: string]: IRoom });
     const [updated, setUpdated] = useState({} as { [key: string]: boolean });
+    const [focus, setFocus] = useState(undefined as string | undefined);
     const joinRoom = async (id: string): Promise<boolean> => {
         const token = await getAccessToken()
         let joinLink = ""
@@ -26,6 +27,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         if (!err) {
             setRooms(prev => ({ ...prev, [data.id]: data }))
             socket.emit("joinRoom", ({ accessToken: await getAccessToken(), roomId: data.id }))
+            setFocus(data.id)
             return true
         }
         return false
@@ -42,6 +44,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         if (!err) {
             setRooms(prev => ({ ...prev, [data.id]: data }))
             socket.emit("joinRoom", ({ accessToken: await getAccessToken(), roomId: data.id }))
+            setFocus(data.id)
             return true
         }
         return false
@@ -74,7 +77,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         };
     }, []);
     return <RoomContext.Provider value={{
-        rooms, updated, setUpdated, joinRoom, createRoom
+        rooms, updated, setUpdated, joinRoom, createRoom, focus, setFocus
     }
     }>{children}</RoomContext.Provider>
 }

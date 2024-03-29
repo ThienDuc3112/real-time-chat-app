@@ -52,7 +52,7 @@ const InvitePopup = ({
             })
             if (!err) {
                 navigator.clipboard.writeText(data.id)
-                alert("Invite code copied to clipboard")
+                alert(`Invite code copied to clipboard\nInvite code is: ${data.id}`)
                 onClose()
                 return
             } else {
@@ -63,23 +63,51 @@ const InvitePopup = ({
         })().finally(() => setDisabled(false))
     }
     return (
-        <PopupDialog onClose={onClose} open={open}>
-            <p>Configure your invite link</p>
-            <form onSubmit={submitHandler}>
-                <div>
-                    <input type="radio" checked={range == "1D"} name="validRange" onClick={getRangeInput} value="1D" id="1D" />
-                    <label htmlFor="1D">1 Day</label>
-                    <input type="radio" checked={range == "3D"} name="validRange" onClick={getRangeInput} value="3D" id="3D" />
-                    <label htmlFor="3D">3 Days</label>
-                    <input type="radio" checked={range == "1W"} name="validRange" onClick={getRangeInput} value="1W" id="1W" />
-                    <label htmlFor="1W">1 Week</label>
-                    <input type="radio" checked={range == "1M"} name="validRange" onClick={getRangeInput} value="1M" id="1M" />
-                    <label htmlFor="1M">1 Month</label>
-                    <input type="radio" checked={range == "INF"} name="validRange" onClick={getRangeInput} value="INF" id="INF" />
-                    <label htmlFor="INF">No expiry</label>
+        <PopupDialog onClose={() => {
+                    setRange("1D")
+                    onClose()
+                }} open={open}>
+            <div className="bg-gray-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                        <h3
+                            className="text-lg leading-6 font-medium text-gray-900"
+                            id="modal-headline"
+                        >
+                            Configure your invite code
+                        </h3>
+                        <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                                Customize the expiry duration for the invite code you are
+                                creating.
+                            </p>
+                        </div>
+                        <form onSubmit={submitHandler} className="mt-4">
+                            <ul className="flex space-x-2 justify-center">
+                                {[
+                                    { id: "1D", desc: "1 Day" },
+                                    { id: "3D", desc: "3 Days" },
+                                    { id: "1W", desc: "1 Week" },
+                                    { id: "1M", desc: "1 Month" },
+                                    { id: "INF", desc: "Forever" },
+                                ].map((inp) =>
+                                    <li>
+                                        <input type="radio" value={inp.id} id={inp.id} checked={range == inp.id} onClick={getRangeInput} name="validRange" className="hidden peer" />
+                                        <label htmlFor={inp.id} className="bg-white peer-checked:bg-blue-500 peer-checked:text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            {inp.desc}
+                                        </label>
+                                    </li>)
+                                }
+                            </ul>
+                            <div className="mt-4 flex justify-center">
+                                <button disabled={disabled} type="submit" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-gray-750 h-10 px-4 py-2">
+                                    Create!
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <button type="submit" disabled={disabled}>Create!</button>
-            </form>
+            </div>
         </PopupDialog>
     );
 };

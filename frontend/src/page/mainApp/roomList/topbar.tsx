@@ -10,7 +10,7 @@ const Topbar = ({focus}:{focus: string | undefined}) => {
             disabled={focus == undefined}
             onClick={() => setOpen(true)}
         >
-            Create invite link
+            Create invite code
         </button>
         {focus && <InvitePopup open={open} onClose={() => setOpen(false)} roomId={focus} />}
     </div>

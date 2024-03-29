@@ -10,9 +10,8 @@ import { socket } from "../../context/socket";
 import { RoomContext } from "../../context/room/roomContext";
 
 const MainPage = () => {
-    const {rooms, updated, setUpdated} = useContext(RoomContext)
+    const {rooms, updated, setUpdated, focus, setFocus} = useContext(RoomContext)
     const [msgs, setMsgs] = useState({} as { [key: string]: IMessage[] });
-    const [focus, setFocus] = useState(undefined as string | undefined);
     useEffect(() => {
         socket.on("error", (error: unknown) => {
             console.log(error);

@@ -27,14 +27,13 @@ const SideBar = ({
                         {Object.keys(rooms).map((roomId) => {
                             const room = rooms[roomId];
                             return (
-                                <li>
                                     <ChatRoomCard
                                         name={room.name}
                                         id={room.id}
                                         setFocus={setFocus}
                                         key={room.id}
+                                        checked={focus == room.id}
                                     />
-                                </li>
                             );
                         })}
                     </ul>

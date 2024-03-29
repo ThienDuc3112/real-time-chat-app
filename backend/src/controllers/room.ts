@@ -199,11 +199,14 @@ export const join = async (req: IUserRequest, res: Response) => {
         }
         if (room.roomType == "direct_message")
             return res.status(401).json({ name: "CannotJoinDM" });
-        await db
-            .insert(roomToMember)
-            .values({ roomId: room.id, userId: req.user.id });
-        return res.json({ ...room, id: room.id.toString() });
+        try {
+            await db
+                .insert(roomToMember)
+                .values({ roomId: room.id, userId: req.user.id });
+        } finally {
+            return res.json({ ...room, id: room.id.toString() });
+        }
     } catch (err) {
-        res.status(400).send({ name: "InvalidRoomId" });
+        res.status(400).send({ name: "InvalidInviteId" });
     }
 };
