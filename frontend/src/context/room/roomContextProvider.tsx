@@ -49,7 +49,56 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
         }
         return false
     }, [])
+    const editRoomName = async (name: string, roomId: string): Promise<boolean> => {
+        const token = await getAccessToken()
+        const [, err] = await post<IRoom>(`${API_URL}/room/editname/${roomId}`, {
+            body: JSON.stringify({ name: name }),
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-type": "application/json"
+            },
+            method: "PUT"
+        })
+        if (!err) return true
+        else return false
+    }
+    const deleteRoom = async (roomId: string): Promise<boolean> => {
+        const token = await getAccessToken()
+        const [, err] = await post(`${API_URL}/room/delete/${roomId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "DELETE"
+        })
+        if (!err) return true
+        else return false
+
+    }
     useEffect(() => {
+        socket.on("updateName", ({ id, newName }: { id: string, newName: string }) => {
+            setRooms(prev => {
+                if (prev[id] != undefined) {
+                    return { ...prev, [id]: { ...prev[id], name: newName } }
+                } else return prev;
+            })
+        })
+        socket.on("roomJoined", (room: IRoom) => {
+            setRooms((prev) => ({ ...prev, [room.id]: room }));
+            setUpdated((prev) => ({ ...prev, [room.id]: false }));
+        });
+        socket.on("roomDeleted", (room: Pick<IRoom, "id" | "name" | "roomType">) => {
+            setRooms(prev => {
+                if(prev[room.id] === undefined) return prev;
+                else {
+                    const {[room.id]: _, ...theRest} = prev;
+                    return theRest;
+                }
+            })
+            setFocus(prev => {
+                if(prev == room.id) return undefined;
+                else return prev;
+            })
+        })
         getAccessToken().then(async (token) => {
             const [data, err] = await get<IRoom[]>(`${API_URL}/room/getallroom`, {
                 headers: {
@@ -67,17 +116,14 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
                 setUpdated(initialUpdated);
             }
             socket.emit("joinAllRoom", token);
-            socket.on("roomJoined", (room: IRoom) => {
-                setRooms((prev) => ({ ...prev, [room.id]: room }));
-                setUpdated((prev) => ({ ...prev, [room.id]: false }));
-            });
         });
         return () => {
             socket.off("roomJoined");
+            socket.off("updateName");
         };
     }, []);
     return <RoomContext.Provider value={{
-        rooms, updated, setUpdated, joinRoom, createRoom, focus, setFocus
+        rooms, updated, setUpdated, joinRoom, createRoom, focus, setFocus, editRoomName, deleteRoom
     }
     }>{children}</RoomContext.Provider>
 }

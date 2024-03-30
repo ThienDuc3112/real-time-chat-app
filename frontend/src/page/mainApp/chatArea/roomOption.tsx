@@ -1,4 +1,8 @@
-const RoomOption = ({ open, closeHandler }: { open: boolean, closeHandler: () => void }) => {
+import { useContext } from "react";
+import { RoomContext } from "../../../context/room/roomContext";
+
+const RoomOption = ({ open, closeHandler, openEditRoom, roomId }: { roomId: string, open: boolean, closeHandler: () => void, openEditRoom: () => void }) => {
+    const { deleteRoom } = useContext(RoomContext)
     return <div id="roomOptionsBackground" onClick={e => {
         if ((e.target as unknown as { id: string | undefined }).id == "roomOptionsBackground") {
             closeHandler()
@@ -8,8 +12,8 @@ const RoomOption = ({ open, closeHandler }: { open: boolean, closeHandler: () =>
     >
         <div id="roomOptions" className="bg-white border border-gray-300 rounded absolute z-20 right-5 p-3 top-14">
             <ul className="w-full h-full">
-                <li className="flex items-center hover:bg-gray-100 hover:cursor-pointer p-1 m-1" onClick={() => { alert("Not implemented"); closeHandler() }}><PencilIcon className="mr-2 h-4 w-4 flex-shrink-0" />Edit name</li>
-                <li className="flex items-center hover:bg-gray-100 hover:cursor-pointer p-1 m-1" onClick={() => { alert("Not implemented"); closeHandler() }}><TrashIcon className="mr-2 h-4 w-4 flex-shrink-0" />Delete room</li>
+                <li className="flex items-center hover:bg-gray-100 hover:cursor-pointer p-1 m-1" onClick={() => { closeHandler(); openEditRoom() }}><PencilIcon className="mr-2 h-4 w-4 flex-shrink-0" />Edit name</li>
+                <li className="flex items-center hover:bg-gray-100 hover:cursor-pointer p-1 m-1" onClick={() => { deleteRoom(roomId).then(success => alert(success ? "Room deleted" : "Failed to delete room")).finally(() => closeHandler()) }}><TrashIcon className="mr-2 h-4 w-4 flex-shrink-0" />Delete room</li>
             </ul>
         </div>
     </div>

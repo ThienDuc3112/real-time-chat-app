@@ -10,4 +10,6 @@ export const RoomContext = createContext({
     createRoom: (name: string) => Promise<boolean>,
     focus: string | undefined,
     setFocus: Dispatch<SetStateAction<string | undefined>>,
+    editRoomName: (name: string, roomId: string) => Promise<boolean>,
+    deleteRoom: (roomId: string) => Promise<boolean>,
 })

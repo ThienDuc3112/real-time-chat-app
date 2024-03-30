@@ -16,7 +16,7 @@ export const post = async <T>(
       if (typeof res.json == "function") err.data = await res.json();
       return [undefined, err];
     }
-    const json: T = await res.json();
+    const json: T = typeof res.json === "function" ? await res.json(): {};
     return [json, undefined];
   } catch (error) {
     console.log(error);

@@ -24,7 +24,7 @@ export const createRoom = async (req: IUserRequest, res: Response) => {
             userId: req.user.id,
             role: "owner",
         });
-        return res.json({ ...room, id: room.id.toString() });
+        return res.json({ ...room, id: room.id.toString(), role: "owner" });
     } catch (error) {
         return res.status(400).json(error);
     }
@@ -33,10 +33,10 @@ export const createRoom = async (req: IUserRequest, res: Response) => {
 export const getAllRooms = async (req: IUserRequest, res: Response) => {
     if (!req.user) return res.sendStatus(401);
     const userRooms = await db
-        .select({ id: rooms.id, name: rooms.name, roomType: rooms.roomType })
+        .select({ id: rooms.id, name: rooms.name, roomType: rooms.roomType, role: roomToMember.role })
         .from(roomToMember)
         .where(eq(roomToMember.userId, req.user.id))
-        .rightJoin(rooms, eq(rooms.id, roomToMember.roomId));
+        .innerJoin(rooms, eq(rooms.id, roomToMember.roomId));
     res.json(
         userRooms.map((room) => ({
             ...room,
@@ -136,7 +136,7 @@ export const removeRoom = async (req: IUserRequest, res: Response) => {
             id: room.id.toString(),
         });
         io.in(roomId.toString()).socketsLeave(roomId.toString());
-        return res.sendStatus(204);
+        return res.json({...room, id: room.id.toString()});
     } catch (err) {
         res.status(400).send({ name: "InvalidRoomId" });
     }
@@ -169,6 +169,7 @@ export const editRoomName = async (req: IUserRequest, res: Response) => {
                 .where(eq(rooms.id, roomId))
                 .returning()
         )[0];
+        io.to(roomId.toString()).emit("updateName", {id: roomId.toString(), newName: newRoomName.data})
         return res.json({ ...updatedRoom, id: updatedRoom.id.toString() });
     } catch (err) {
         res.status(400).send({ name: "InvalidRoomId" });

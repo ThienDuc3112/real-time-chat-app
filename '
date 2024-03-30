@@ -21,9 +21,18 @@ const MainPage = () => {
                 return { ...prev, [msg.roomId]: [...(prev[msg.roomId] ?? []), msg] };
             });
         });
+        socket.on("updateName", () => ({ id, newName }: { id: string, newName: string }) => {
+            console.log(newName)
+            // setRooms(prev => {
+            //     if (prev[id] != undefined) {
+            //         return { ...prev, [id]: { ...prev[id], name: newName } }
+            //     } else return prev;
+            // })
+        })
         return () => {
             socket.off("incomingMessage");
             socket.off("error");
+            socket.off("updateName");
         };
     }, []);
     useEffect(() => {

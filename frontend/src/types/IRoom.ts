@@ -3,4 +3,5 @@ export interface IRoom {
   name: string;
   roomType: "direct_message" | "normal";
   updated?: boolean;
+  role: "member" | "moderator" | "owner";
 }
