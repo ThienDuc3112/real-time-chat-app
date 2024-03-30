@@ -2,10 +2,14 @@ import { FormEventHandler, useState } from "react";
 import { socket } from "../../../context/socket";
 import { getAccessToken } from "../../../util/getAccessToken";
 
-const Input = ({ focus }: { focus: string }) => {
+const Input = ({ focus }: { focus: string | undefined }) => {
     const [message, setMessage] = useState("");
     const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+        if (!focus) {
+            setMessage("");
+            return;
+        }
         if (message.length == 0) return;
         socket.emit("sendMessage", {
             to: focus,

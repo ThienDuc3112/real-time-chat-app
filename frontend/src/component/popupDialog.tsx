@@ -4,14 +4,10 @@ const PopupDialog = ({
     children,
     open,
     onClose,
-    width,
-    height,
 }: {
     children: ReactNode;
     open: boolean;
     onClose: () => void;
-    width?: string;
-    height?: string;
 }) => {
     const ref = useRef<HTMLDialogElement>(null);
     return (

@@ -20,7 +20,7 @@ const ChatArea = ({
                 ))}
             </div>
             <div className="p-4 border-t">
-                <Input focus={`${room?.id}`} />
+                <Input focus={room?.id} />
             </div>
         </section>
     );

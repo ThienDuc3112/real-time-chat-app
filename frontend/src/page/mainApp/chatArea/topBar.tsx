@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { IRoom } from "../../../types/IRoom";
+import RoomOption from "./roomOption";
 
 const TopBar = ({ room }: { room: IRoom | undefined }) => {
+    const [open, setOpen] = useState(false)
     return (
         <div className="p-4 border-b flex justify-between items-center">
             <h2 className="text-xl font-semibold">{room?.name ?? "Select a room"}</h2>
@@ -11,7 +14,10 @@ const TopBar = ({ room }: { room: IRoom | undefined }) => {
                 aria-controls="radix-:r0:"
                 data-state="closed"
             ></button>
-            <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-10 hover:bg-gray-200 rounded-full p-2">
+            <button
+                onClick={() => setOpen(true)}
+                className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-10 hover:bg-gray-200 rounded-full p-2"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={24}
@@ -30,6 +36,7 @@ const TopBar = ({ room }: { room: IRoom | undefined }) => {
                 </svg>
                 <span className="sr-only">More</span>
             </button>
+            <RoomOption closeHandler={() => setOpen(false)} open={open} />
         </div>
     );
 };

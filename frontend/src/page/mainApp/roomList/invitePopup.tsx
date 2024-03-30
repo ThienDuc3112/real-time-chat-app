@@ -1,4 +1,4 @@
-import { FormEventHandler, MouseEventHandler, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import PopupDialog from "../../../component/popupDialog";
 import { post } from "../../../util/fetch";
 import { API_URL } from "../../../constants";
@@ -15,9 +15,6 @@ const InvitePopup = ({
 }) => {
     const [range, setRange] = useState("1D")
     const [disabled, setDisabled] = useState(false)
-    const getRangeInput: MouseEventHandler<HTMLInputElement> = (e) => {
-        setRange((e.target as unknown as { value: string }).value)
-    }
     const submitHandler: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
         setDisabled(true);
@@ -64,9 +61,9 @@ const InvitePopup = ({
     }
     return (
         <PopupDialog onClose={() => {
-                    setRange("1D")
-                    onClose()
-                }} open={open}>
+            setRange("1D")
+            onClose()
+        }} open={open}>
             <div className="bg-gray-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -90,9 +87,9 @@ const InvitePopup = ({
                                     { id: "1W", desc: "1 Week" },
                                     { id: "1M", desc: "1 Month" },
                                     { id: "INF", desc: "Forever" },
-                                ].map((inp) =>
-                                    <li>
-                                        <input type="radio" value={inp.id} id={inp.id} checked={range == inp.id} onClick={getRangeInput} name="validRange" className="hidden peer" />
+                                ].map((inp, index) =>
+                                    <li key={index}>
+                                        <input type="radio" value={inp.id} id={inp.id} checked={range == inp.id} onChange={e => setRange((e.target as unknown as { value: string }).value)} name="validRange" className="hidden peer" />
                                         <label htmlFor={inp.id} className="bg-white peer-checked:bg-blue-500 peer-checked:text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             {inp.desc}
                                         </label>
